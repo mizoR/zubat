@@ -1,5 +1,7 @@
 # Zubat
 
+zubat is a gem that wraps around static analysis gems [Reek](https://github.com/troessner/reek) and [Flog](https://github.com/seattlerb/flog) to visualize trends' report of your Ruby code quality.
+
 ## Installation
 
 Install the gem and add to the application's Gemfile by executing:
@@ -25,6 +27,12 @@ Usage: zubat [OPTIONS] FILE [FILE]...
 ```
 
 ## Screenshot
+
+```sh
+# For example, runs the following command under the ruby project root. It reports the result as shown in the screenshot below.
+
+$ zubat lib/find.rb lib/csv.rb lib/uri.rb lib/set.rb
+```
 
 ![](./screenshot.png)
 
