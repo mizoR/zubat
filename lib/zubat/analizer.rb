@@ -50,7 +50,7 @@ module Zubat
 
       stat = Stat.new(stat:)
 
-      AnalizedResult.new(label: "#{commit.time.iso8601} (#{commit.author})", stat:)
+      AnalizedResult.new(label: "#{commit.time.iso8601} (#{commit.sha})", stat:)
     end
   end
 end

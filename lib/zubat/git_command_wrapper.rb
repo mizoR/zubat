@@ -9,7 +9,7 @@ module Zubat
     module Stub
       def log(files:)
         logs = files.map do
-          Log.new(sha: SecureRandom.hex(3), time: Time.at(rand(1_900_000_000..1_900_999_999)), author: 'bot')
+          Log.new(sha: SecureRandom.hex(3), time: Time.at(rand(1_900_000_000..1_900_999_999)))
         end
 
         logs.sort_by!(&:time)
@@ -32,7 +32,7 @@ module Zubat
       end
     end
 
-    Log = Data.define(:sha, :time, :author)
+    Log = Data.define(:sha, :time)
 
     def self.new
       instance = super
@@ -41,12 +41,12 @@ module Zubat
     end
 
     def log(files:)
-      logs = `git log --oneline --pretty=format:'{ "sha": "%h", "time": "%ad", "author": "%aN" }' -- #{files.join(' ')}`.split("\n")
+      logs = `git log --oneline --pretty=format:'{ "sha": "%h", "time": "%ad" }' -- #{files.join(' ')}`.split("\n")
 
       logs.map do |log|
         args = JSON.parse(log, symbolize_names: true)
 
-        Log.new(sha: args[:sha], time: Time.parse(args[:time]), author: args[:author])
+        Log.new(sha: args[:sha], time: Time.parse(args[:time]))
       end
     end
 

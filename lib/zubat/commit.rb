@@ -2,22 +2,21 @@
 
 module Zubat
   class Commit
-    attr_reader :time, :author
+    attr_reader :time, :sha
 
     def self.find(files:)
       logs = GitCommandWrapper.new.log(files:)
 
-      commits = logs.map { |log| Zubat::Commit.new(sha: log.sha, time: log.time, author: log.author) }
+      commits = logs.map { |log| Zubat::Commit.new(sha: log.sha, time: log.time) }
 
       commits.reverse!
 
       commits
     end
 
-    def initialize(sha:, time:, author:)
+    def initialize(sha:, time:)
       @sha = sha
       @time = time
-      @author = author
     end
 
     def exists?(file:)
