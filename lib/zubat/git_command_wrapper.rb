@@ -14,6 +14,8 @@ module Zubat
 
         logs.sort_by!(&:time)
 
+        logs.reverse!
+
         logs
       end
 
@@ -43,11 +45,17 @@ module Zubat
     def log(files:)
       logs = `git log --oneline --pretty=format:'{ "sha": "%h", "time": "%ad" }' -- #{files.join(' ')}`.split("\n")
 
-      logs.map do |log|
+      logs.map! do |log|
         args = JSON.parse(log, symbolize_names: true)
 
         Log.new(sha: args[:sha], time: Time.parse(args[:time]))
       end
+
+      logs.sort_by!(&:time)
+
+      logs.reverse!
+
+      logs
     end
 
     def exists?(sha:, file:)
