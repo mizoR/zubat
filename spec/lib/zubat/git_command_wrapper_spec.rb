@@ -55,7 +55,7 @@ RSpec.describe Zubat::GitCommandWrapper do
 
   describe '#exists?' do
     it do
-      exists = wrapper.exists?(sha: '4a42e8f', file: 'lib/zubat.rb')
+      exists = wrapper.exists?(sha: '09b3414', file: 'lib/zubat.rb')
 
       expect(exists).to be(true)
     end
@@ -63,7 +63,7 @@ RSpec.describe Zubat::GitCommandWrapper do
 
   describe '#show' do
     it do
-      shown = wrapper.show(sha: '6e05ef4', file: 'lib/zubat.rb')
+      shown = wrapper.show(sha: '09b3414', file: 'lib/zubat.rb')
 
       expect(shown).to be_instance_of(String)
     end
