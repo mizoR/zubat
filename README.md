@@ -1,4 +1,4 @@
-# Zubat
+# Zubat🦇
 
 zubat is a gem that wraps around static analysis gems [Reek](https://github.com/troessner/reek) and [Flog](https://github.com/seattlerb/flog) to visualize trends' report of your Ruby code quality.
 
