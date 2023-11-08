@@ -11,61 +11,46 @@ RSpec.describe Zubat::GitCommandWrapper do
     end
 
     describe '#log' do
-      it do
+      it 'returns logs' do
         expect(wrapper.singleton_class.include?(described_class::Stub)).to be(true)
 
-        logs = wrapper.log(files: ['hello_world.rb'])
-
-        expect(logs.size).to eq(1)
-
-        expect(logs).to be_all be_instance_of(described_class::Log)
+        expect(wrapper.log(files: ['hello_world.rb'])).to be_any.and be_all be_instance_of(described_class::Log)
       end
     end
 
     describe '#exists?' do
-      it do
+      it 'exists' do
         expect(wrapper.singleton_class.include?(described_class::Stub)).to be(true)
 
-        exists = wrapper.exists?(sha: 'abcdefg', file: 'hello_world.rb')
-
-        expect(exists).to be(true)
+        expect(wrapper.exists?(sha: 'abcdefg', file: 'hello_world.rb')).to be(true)
       end
     end
 
     describe '#show' do
-      it do
+      it 'shows source code' do
         expect(wrapper.singleton_class.include?(described_class::Stub)).to be(true)
 
-        shown = wrapper.show(sha: 'abcdefg', file: 'hello_world.rb')
-
-        expect(shown).to be_instance_of(String).and start_with('class HelloWorld')
+        expect(wrapper.show(sha: 'abcdefg',
+                            file: 'hello_world.rb')).to be_instance_of(String).and start_with('class HelloWorld')
       end
     end
   end
 
   describe '#log' do
-    it do
-      logs = wrapper.log(files: ['lib/zubat.rb'])
-
-      expect(logs.size).to be >= 1
-
-      expect(logs).to be_all be_instance_of(described_class::Log)
+    it 'logs' do
+      expect(wrapper.log(files: ['lib/zubat.rb'])).to be_any.and be_all be_instance_of(described_class::Log)
     end
   end
 
   describe '#exists?' do
-    it do
-      exists = wrapper.exists?(sha: '09b3414', file: 'lib/zubat.rb')
-
-      expect(exists).to be(true)
+    it 'exists' do
+      expect(wrapper.exists?(sha: '09b3414', file: 'lib/zubat.rb')).to be(true)
     end
   end
 
   describe '#show' do
-    it do
-      shown = wrapper.show(sha: '09b3414', file: 'lib/zubat.rb')
-
-      expect(shown).to be_instance_of(String)
+    it 'shows source code' do
+      expect(wrapper.show(sha: '09b3414', file: 'lib/zubat.rb')).to be_instance_of(String)
     end
   end
 end

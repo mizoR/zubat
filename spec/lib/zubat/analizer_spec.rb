@@ -19,8 +19,17 @@ RSpec.describe Zubat::Analizer do
 
       expect(result.label.size).to be > 0
 
-      expect(result.stat).to eq(described_class::Stat.new(stat: { 'hello_world.rb' => { average: 1, total_score: 1,
-                                                                                        smells: { 'IrresponsibleModule' => 1 } } }))
+      expect(result.stat).to eq(
+        described_class::Stat.new(
+          stat: {
+            'hello_world.rb' => {
+              average: 1,
+              total_score: 1,
+              smells: { 'IrresponsibleModule' => 1 }
+            }
+          }
+        )
+      )
     end
   end
 end

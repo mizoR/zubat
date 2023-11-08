@@ -19,11 +19,11 @@ module Zubat
         logs
       end
 
-      def exists?(sha:, file:)
+      def exists?(sha:, file:) # rubocop:disable Lint/UnusedMethodArgument
         true
       end
 
-      def show(sha:, file:)
+      def show(sha:, file:) # rubocop:disable Lint/UnusedMethodArgument
         <<~SCRIPT
           class HelloWorld
             def show
