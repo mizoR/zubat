@@ -16,13 +16,9 @@ module Zubat
           opt.on('--silent', '-s') { silent = true }
           opt.on('--root=ROOT') { |v| root = v }
 
-          files = opt.parse!(argv)
+          files = opt.parse!(argv).uniq
 
-          abort 'no files to process, aborting.' if files.empty? && argv.empty?
-
-          Dir.chdir(root || Dir.pwd) do
-            files = files.uniq
-          end
+          abort 'no files to process, aborting.' if argv.empty?
 
           new(files:, silent:, root:)
         end
