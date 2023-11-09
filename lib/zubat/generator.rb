@@ -4,8 +4,10 @@ module Zubat
   class Generator
     FILE = 'tmp/zubat/index.html'
 
+    TEMPLATE = 'templates/chart.html.erb'
+
     def generate(results:)
-      erb = Zubat.root.join('templates/chart.html.erb').read
+      erb = Zubat.root.join(TEMPLATE).read
 
       ylabels = []
 
