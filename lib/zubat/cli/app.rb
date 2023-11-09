@@ -48,21 +48,17 @@ module Zubat
       def start(argv)
         argv = Argv.parse!(argv)
 
-        generator = Generator.new
+        files = argv.files
 
         results = Dir.chdir(argv.root || Dir.pwd) do
-          files = argv.files
-
-          analizer = Zubat::Analizer.new
-
           commits = Zubat::Commit.find(files:)
 
-          progress = Progress.new(commits, silent: argv.silent)
-
-          progress.map { |commit| analizer.analize(files:, commit:) }
+          Progress
+            .new(commits, silent: argv.silent)
+            .map { |commit| Zubat::Analizer.new.analize(files:, commit:) }
         end
 
-        file = generator.generate(results:)
+        file = Generator.new.generate(results:)
 
         puts "Generated - #{file}\n"
       end
