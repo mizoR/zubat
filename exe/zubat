@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'zubat/cli'
+require 'zubat/cli/app'
 
-Zubat::CLI.new.start(ARGV)
+Zubat::CLI::App.new.start(ARGV)
