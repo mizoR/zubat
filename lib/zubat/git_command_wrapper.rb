@@ -7,6 +7,10 @@ require 'securerandom'
 module Zubat
   class GitCommandWrapper
     module Stub
+      def remote_origin_url
+        "https://github.com/mizoR/zubat.git"
+      end
+
       def log(files:)
         logs = files.map do
           Log.new(sha: SecureRandom.hex(3), time: Time.at(rand(1_900_000_000..1_900_999_999)))
@@ -40,6 +44,10 @@ module Zubat
       instance = super
       instance.extend(Stub) if Zubat.stubbed?
       instance
+    end
+
+    def remote_origin_url
+      `git config --get remote.origin.url`.chomp
     end
 
     def log(files:)

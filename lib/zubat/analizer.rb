@@ -2,7 +2,7 @@
 
 module Zubat
   class Analizer
-    AnalizedResult = Data.define(:label, :stat)
+    AnalizedResult = Data.define(:label, :commit, :stat)
 
     # @param stat [Hash<String, Hash<String, Integer>>]
     Stat = Data.define(:stat) do
@@ -50,7 +50,9 @@ module Zubat
 
       stat = Stat.new(stat:)
 
-      AnalizedResult.new(label: "#{commit.time.iso8601} (#{commit.sha})", stat:)
+      AnalizedResult.new(label: "#{commit.time.iso8601} (#{commit.sha})",
+                         commit:,
+                         stat:)
     end
   end
 end

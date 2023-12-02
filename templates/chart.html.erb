@@ -308,11 +308,31 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+      var siteUrl =  <%= site_url.to_json %>;
+
       var datasets =  <%= datasets.to_json %>;
+
+      var onClickWith = function (chart) {
+        return function (e) {
+          const points = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+
+          if (points.length === 0) return;
+
+          const point = points[0];
+          const label = chart.data.labels[point.index];
+          const value = chart.data.datasets[point.datasetIndex].data[point.index];
+
+          if (siteUrl) {
+            const url = siteUrl + '/commit/' + value.commit_sha;
+
+            open(url, '_blank');
+          }
+        };
+      };
 
       var ctx0 = document.getElementById("chart_of_code_complexity_total_trend");
 
-      new Chart(ctx0, {
+      var chart0 = new Chart(ctx0, {
         type: 'line',
         data: {
           datasets: datasets
@@ -333,9 +353,11 @@
         }
       });
 
+      ctx0.addEventListener('click', onClickWith(chart0));
+
       var ctx1 = document.getElementById("chart_of_code_complexity_average_trend");
 
-      new Chart(ctx1, {
+      var chart1 = new Chart(ctx1, {
         type: 'line',
         data: {
           datasets: datasets
@@ -356,6 +378,8 @@
         }
       });
 
+      ctx1.addEventListener('click', onClickWith(chart1));
+
       var ctx2 = document.getElementById("chart_of_code_smell_scores_trend");
 
       var select = document.createElement('select');
@@ -369,8 +393,6 @@
         select.add(option);
       });
 
-
-
       select.addEventListener('change', function () {
         var file = select.value;
 
@@ -379,7 +401,7 @@
 
       document.getElementById("select_of_code_smell_scores_trend").appendChild(select);
 
-      var chart3 = null;
+      var chart2 = null;
 
       var showCodeSmellChartFor = function (file) {
         var data = datasets.find(item => item.label === file).data;
@@ -400,9 +422,9 @@
           };
         });
 
-        if (chart3) chart3.destroy();
+        if (chart2) chart2.destroy();
 
-        chart3 = new Chart(ctx2, {
+        chart2 = new Chart(ctx2, {
           type: 'line',
           data: {
             datasets: smellsets
@@ -422,6 +444,8 @@
             }
           }
         });
+
+        ctx2.addEventListener('click', onClickWith(chart2));
       };
 
       showCodeSmellChartFor(datasets[0].label);

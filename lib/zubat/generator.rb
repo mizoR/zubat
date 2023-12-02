@@ -6,7 +6,7 @@ module Zubat
 
     TEMPLATE = 'templates/chart.html.erb'
 
-    def generate(results:)
+    def generate(results:, site_url:)
       erb = Zubat.root.join(TEMPLATE).read
 
       ylabels = []
@@ -35,6 +35,7 @@ module Zubat
 
           dataset[:data] << {
             label: xlabel,
+            commit_sha: result.commit.sha,
             complexity_total: result.stat.complexity_total(ylabel),
             complexity_average: result.stat.complexity_average(ylabel),
             smells_scores: result.stat.smell_scores(ylabel).map { |type, value| { type:, value: } }
@@ -42,7 +43,7 @@ module Zubat
         end
       end
 
-      html = ERB.new(erb).result_with_hash(datasets:)
+      html = ERB.new(erb).result_with_hash(datasets:, site_url:)
 
       file = File.expand_path(FILE)
 

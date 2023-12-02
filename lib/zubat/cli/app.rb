@@ -24,6 +24,35 @@ module Zubat
         end
       end
 
+      class GitRepo
+        URL_FORMATS = [
+          %r[https://(.+)/(.+)/(.+).git],
+          %r[git@(.+):(.+)/(.+).git],
+        ]
+
+        def self.guess
+          url = GitCommandWrapper.new.remote_origin_url
+
+          matched = URL_FORMATS
+            .find { |format| format.match?(url) }
+            &.match(url)
+
+          return unless matched
+
+          new(hostname: matched[1], org: matched[2], repo: matched[3])
+        end
+
+        def initialize(hostname:, org:, repo:)
+          @hostname = hostname
+          @org = org
+          @repo = repo
+        end
+
+        def site_url
+          "https://#{@hostname}/#{@org}/#{@repo}"
+        end
+      end
+
       class Progress
         include Enumerable
 
@@ -50,6 +79,8 @@ module Zubat
 
         files = argv.files
 
+        repo = GitRepo.guess
+
         results = Dir.chdir(argv.root || Dir.pwd) do
           commits = Zubat::Commit.find(files:)
 
@@ -58,7 +89,7 @@ module Zubat
             .map { |commit| Zubat::Analizer.new.analize(files:, commit:) }
         end
 
-        file = Generator.new.generate(results:)
+        file = Generator.new.generate(results:, site_url: repo&.site_url)
 
         puts "Generated - #{file}\n"
       end
