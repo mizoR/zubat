@@ -28,6 +28,7 @@ module Zubat
         URL_FORMATS = [
           %r[https://(.+)/(.+)/(.+).git],
           %r[git@(.+):(.+)/(.+).git],
+          %r[ssh://(.+)/(.+)/(.+)],
         ]
 
         def self.guess
@@ -79,9 +80,11 @@ module Zubat
 
         files = argv.files
 
-        repo = GitRepo.guess
+        repo = nil
 
         results = Dir.chdir(argv.root || Dir.pwd) do
+          repo = GitRepo.guess
+
           commits = Zubat::Commit.find(files:)
 
           Progress
