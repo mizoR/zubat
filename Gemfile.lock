@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    zubat (0.0.2)
+    zubat (0.0.3)
       flog (~> 4.8)
       reek (~> 6.1)
 
