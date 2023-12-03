@@ -36,9 +36,10 @@ module Zubat
           dataset[:data] << {
             label: xlabel,
             commit_sha: result.commit.sha,
+            commit_diff: result.stat.diff(ylabel),
             complexity_total: result.stat.complexity_total(ylabel),
             complexity_average: result.stat.complexity_average(ylabel),
-            smells_scores: result.stat.smell_scores(ylabel).map { |type, value| { type:, value: } }
+            smells_scores: result.stat.smell_scores(ylabel).map { |type, value| { type:, value: } },
           }
         end
       end

@@ -26,5 +26,9 @@ module Zubat
     def show(file:)
       GitCommandWrapper.new.show(sha: @sha, file:)
     end
+
+    def diff(file:)
+      GitCommandWrapper.new.diff(sha: @sha, file:)
+    end
   end
 end

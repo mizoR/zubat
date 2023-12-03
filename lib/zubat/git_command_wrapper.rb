@@ -36,6 +36,17 @@ module Zubat
           end
         SCRIPT
       end
+
+      def diff(sha:, file:) # rubocop:disable Lint/UnusedMethodArgument
+        <<~SCRIPT
+          diff --git a/hello_world.rb b/hello_world.rb
+            class HelloWorld
+              def show
+          +      puts "Hello World"
+              end
+            end
+        SCRIPT
+      end
     end
 
     Log = Data.define(:sha, :time)
@@ -72,6 +83,10 @@ module Zubat
 
     def show(sha:, file:)
       `git show #{sha}:#{file}`
+    end
+
+    def diff(sha:, file:)
+      `git show #{sha} -- #{file}`
     end
   end
 end

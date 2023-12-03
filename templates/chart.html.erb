@@ -4,6 +4,10 @@
     <meta name="robots" content="noindex,nofollow">
     <meta charset="UTF-8">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" integrity="sha512-hasIneQUHlh06VNBe7f6ZcHmeRTLIaQWFd43YriJ0UND19bvYRauxthDg8E4eVNPm9bRUhr5JGeqH7FRFXQu5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
 
     <style>
@@ -253,6 +257,12 @@
         left: 200px;
       }
     }
+
+    #diffArea {
+      max-height: 400px;
+      overflow: auto;
+    }
+
     </style>
     <title>zubat</title>
   </head>
@@ -284,23 +294,17 @@
         </div>
 
         <div class="content">
+          <p><pre id="diffArea"></pre></p>
+
           <h2 id="complexity_total" class="content-subhead">Complexity Total</h2>
-          <p>
-          <canvas id="chart_of_code_complexity_total_trend" width="400" height="300"></canvas>
-          </p>
+          <p><canvas id="chart_of_code_complexity_total_trend" width="400" height="200"></canvas></p>
 
           <h2 id="complexity_average" class="content-subhead">Complexity Average <small>- Complexity score per methods</small></h2>
-          <p>
-          <canvas id="chart_of_code_complexity_average_trend" width="400" height="300"></canvas>
-          </p>
+          <p><canvas id="chart_of_code_complexity_average_trend" width="400" height="200"></canvas></p>
 
           <h2 id="code_smells" class="content-subhead">Code smells</h2>
-          <p>
-            <div id="select_of_code_smell_scores_trend"></div>
-          </p>
-          <p>
-          <canvas id="chart_of_code_smell_scores_trend" width="400" height="300"></canvas>
-          </p>
+          <p><div id="select_of_code_smell_scores_trend"></div></p>
+          <p><canvas id="chart_of_code_smell_scores_trend" width="400" height="200"></canvas></p>
         </div>
       </div>
     </div>
@@ -322,11 +326,14 @@
           const label = chart.data.labels[point.index];
           const value = chart.data.datasets[point.datasetIndex].data[point.index];
 
-          if (siteUrl) {
-            const url = siteUrl + '/commit/' + value.commit_sha;
+          const code = document.createElement('code');
+          code.classList.add('language-diff');
+          code.textContent = value.commit_diff;
+          hljs.highlightBlock(code);
 
-            open(url, '_blank');
-          }
+          const diffArea = document.getElementById('diffArea');
+          diffArea.innerHTML = '';
+          diffArea.appendChild(code);
         };
       };
 
