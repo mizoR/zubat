@@ -51,7 +51,7 @@ module Zubat
 
         FlogWrapper.new.examine(code).then do |examined|
           stat[file][:average] = examined.average
-          stat[file][:total_score] = examined.average
+          stat[file][:total_score] = examined.total_score
         end
 
         stat[file][:smells] = ReekWrapper.new.examine(code).map(&:smell_type).tally
