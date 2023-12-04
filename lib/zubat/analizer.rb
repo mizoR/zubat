@@ -39,11 +39,17 @@ module Zubat
       files.each do |file|
         diff = commit.diff(file:)
 
-        next if diff.empty?
-
         stat[file] = {}
 
         stat[file].merge!(diff:)
+
+        unless commit.exists?(file:)
+          stat[file][:average] = 0
+          stat[file][:total_score] = 0
+          stat[file][:smells] = {}
+
+          next
+        end
 
         code = commit.show(file:)
 
